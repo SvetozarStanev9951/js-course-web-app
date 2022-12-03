@@ -27,7 +27,8 @@ h3 {
 }
 
 h4 {
-  font-size: 1.5rem;
+  margin: 10px;
+  font-size: 1.2rem;
   overflow-wrap: break-word;
 }
 
@@ -43,8 +44,8 @@ a {
 }
 
 select {
-  padding: 10px 20px;
-  width: 90%;
+  padding: 10px 0px;
+  width: 100%;
   background-color: transparent;
   border: 2px solid grey;
   border-radius: 10px;
@@ -69,6 +70,72 @@ a:hover {
   text-align: center;
 }
 
+/*  */
+.collapsible-group {
+  margin-bottom: 10px;
+}
+
+.toggler {
+  cursor: pointer;
+  margin: 10px 20px;
+  padding-right: 5px;
+  text-align: left;
+}
+
+.toggler:before {
+  content: '';
+  display: block;
+  border-left: 8px solid black;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  width: 0;
+  height: 0;
+  float: right;
+  transition: transform 0.3s ease-out;
+}
+
+.toggler.toggled:before {
+  transform: rotate(90deg);
+}
+
+.collapsible-wrapper {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  padding-bottom: 10px;
+}
+
+.collapsible-wrapper:after {
+  content: '';
+  height: 50px;
+  transition: height 0.3s linear, max-height 0s 0.3s linear;
+  max-height: 0px;
+}
+
+.collapsible {
+  margin: 10px 20px;
+  flex: 1;
+  transition: margin-bottom 0.3s cubic-bezier(0, 0, 0, 1);
+  margin-bottom: 0;
+  max-height: 4000px;
+}
+
+.collapsible-wrapper.collapsed>.collapsible {
+  margin-bottom: -2000px;
+  transition: margin-bottom 0.3s cubic-bezier(1, 0, 1, 1),
+    visibility 0s 0.3s, max-height 0s 0.3s;
+  visibility: hidden;
+  max-height: 0;
+}
+
+.collapsible-wrapper.collapsed:after {
+  height: 0;
+  transition: height 0.3s linear;
+  max-height: 50px;
+}
+
+/*  */
+
 .filter {
   width: 30%;
   justify-content: space-between;
@@ -82,12 +149,13 @@ a:hover {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 #search-recipe-input {
   line-height: 2rem;
   font-size: 1.2rem;
-  margin: 50px 20px;
+  margin: 10px 20px;
   padding: 10px 20px;
   outline-color: transparent;
   transition: outline 1s ease-out;
@@ -96,6 +164,34 @@ a:hover {
 
 #search-recipe-input:focus-visible {
   outline-color: var(--main-color);
+}
+
+
+#search-ingredients-input {
+  line-height: 2rem;
+  font-size: 1.2rem;
+  width: 100%;
+  padding: 10px 0px;
+  outline-color: transparent;
+  transition: outline 1s ease-out;
+  border: none;
+}
+
+#search-ingredients-input:focus-visible {
+  outline-color: var(--main-color);
+}
+
+.search-ingredients-list-item {
+  margin-bottom: 5px;
+  text-align: left;
+  position: relative;
+  border-bottom: 1px solid gray;
+}
+
+.search-ingredients-list-item button {
+  position: absolute;
+  right: 0;
+  top: 2px;
 }
 
 #my-app-logo {
@@ -161,6 +257,7 @@ td {
 }
 
 @media only screen and (max-width: 600px) {
+
   .results,
   .filter {
     width: 100%;
@@ -175,6 +272,7 @@ td {
   th {
     font-size: 1rem;
   }
+
   td {
     font-size: 1rem;
   }
