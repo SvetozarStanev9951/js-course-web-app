@@ -2,7 +2,7 @@ const searchRecipeInput = document.getElementById("search-recipe-input");
 const categoriesFilterContainer = document.getElementById(
   "detailed-categories-filter"
 );
-const resultsContainer = document.getElementById("results-contaienr");
+const resultsContainer = document.getElementById("results-container");
 const myAppLogo = document.getElementById("my-app-logo");
 const areasSelectElement = document.getElementById("areas-of-origin");
 
@@ -216,6 +216,7 @@ async function main() {
   renderCategories();
   await getRecipeOfTheDay();
   createAreaFilterDropdown();
+  clearUI();
   // event listeners are in control from now on...
 }
 
@@ -224,3 +225,111 @@ myAppLogo.addEventListener("click", main);
 areasSelectElement.addEventListener("change", renderMealsByCountry);
 
 main();
+
+function collapse(div) {
+  div.classList.toggle('toggled');
+  const group = div.closest('.collapsible-group');
+  const collapsible = group.querySelector('.collapsible-wrapper');
+  collapsible.classList.toggle('collapsed');
+}
+
+// 
+
+const ingredients = document.getElementById("search-ingredients-input");
+const ingredientsList = document.getElementById("search-ingredients-list");
+
+
+ingredients.addEventListener('keyup', () => {
+  removeElements();
+  let index = 0;
+  for (let { strIngredient: i } of appData.ingredients.data) {
+    // limit to 10 suggestions
+    if (index > 9) break;
+    if (
+      i.toLowerCase().startsWith(ingredients.value.toLowerCase()) &&
+      ingredients.value != ""
+    ) {
+      index++;
+      let listItem = document.createElement("li");
+      listItem.classList.add("list-items");
+      listItem.style.cursor = "pointer";
+      listItem.setAttribute("onclick", "addIngredient('" + i + "')");
+      let word = "<b>" + i.substr(0, ingredients.value.length) + "</b>";
+      word += i.substr(ingredients.value.length);
+      listItem.innerHTML = word;
+      document.getElementById("search-ingredients-suggestions").appendChild(listItem);
+    }
+  }
+});
+
+let ingredientsArray = [];
+
+async function addIngredient(value) {
+  ingredients.value = '';
+  if (!ingredientsArray.includes(value)) {
+    const div = document.createElement('div');
+    div.className = 'search-ingredients-list-item';
+    const label = document.createElement('h4');
+    label.textContent = value;
+    div.appendChild(label);
+    const btn = document.createElement('button');
+    btn.innerHTML = 'X';
+    btn.addEventListener('click', () => {
+      ingredientsArray.splice(ingredientsArray.indexOf(value), 1);
+      div.remove();
+      renderMealsByIngredients(ingredientsArray);
+    });
+    div.appendChild(btn);
+    ingredientsArray.push(value);
+    ingredientsList.appendChild(div);
+    renderMealsByIngredients(ingredientsArray);
+  }
+  removeElements();
+}
+function removeElements() {
+  let items = document.querySelectorAll(".list-items");
+  items.forEach((item) => {
+    item.remove();
+  });
+}
+
+
+function renderMealsByIngredients(inArr) {
+  const filtered = [];
+
+  for (const meal of mockData) {
+    let multiple = 0;
+    for (const ingr of inArr) {
+      for (const value of Object.values(meal))
+        if (ingr.toLowerCase() === value.toLowerCase()) {
+          multiple++;
+          break;
+        }
+    }
+    if (multiple === inArr.length)
+      filtered.push(meal);
+  }
+
+  resultsContainer.innerHTML = "";
+  resultsContainer.style.flexDirection = "row";
+  resultsContainer.style.flexWrap = "wrap";
+
+  if (filtered.length == 0) {
+    const h1 = document.createElement('h1');
+    h1.textContent = `No recipes found with ${inArr.join(',')}`;
+    resultsContainer.appendChild(h1);
+  } else
+    filtered.forEach((meal) => {
+      const newMeal = createMealThumbnail(meal);
+      resultsContainer.appendChild(newMeal);
+    });
+
+  window.scrollTo({ top: 0 });
+}
+
+function clearUI() {
+  removeElements();
+  ingredients.value = '';
+  ingredientsArray = [];
+  ingredientsList.innerHTML = '';
+}

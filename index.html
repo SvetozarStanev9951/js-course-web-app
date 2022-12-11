@@ -1,31 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles/styles.css" />
-    <script src="scripts/fetchData.js"></script>
-    <script src="scripts/utils.js"></script>
-    <title>My Apps</title>
-  </head>
-  <body>
-    <div class="container filter" id="filter-contaienr">
-      <h2 id="my-app-logo">MY APP</h2>
-      <span>Apply filters</span>
-      <input
-        type="text"
-        id="search-recipe-input"
-        placeholder="Search for a recipe"
-      />
-      <h4>Filter by category</h4>
-      <div class="categories" id="detailed-categories-filter"></div>
-      <h4>Filter by country</h4>
-      <select name="areas" id="areas-of-origin">
-        <option value="default"></option>
-      </select>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles/styles.css" />
+  <script src="scripts/fetchData.js"></script>
+  <script src="scripts/utils.js"></script>
+  <script src="mock.js"></script>
+  <title>My Apps</title>
+</head>
+
+<body>
+  <div class="container filter" id="filter-container">
+    <h2 id="my-app-logo">MY APP</h2>
+    <!-- <span>Apply filters</span> -->
+    <input type="text" id="search-recipe-input" placeholder="Search for a recipe" />
+    <div class="collapsible-group">
+      <h4 class="toggler" onclick="collapse(this)">Filter by category</h4>
+      <div class="collapsible-wrapper collapsed">
+        <div class="collapsible">
+          <div class="categories" id="detailed-categories-filter"></div>
+        </div>
+      </div>
     </div>
-    <div class="container results" id="results-contaienr"></div>
-    <script src="scripts/index.js"></script>
-  </body>
+
+    <div class="collapsible-group">
+      <h4 class="toggler" onclick="collapse(this)">Filter by country</h4>
+      <div class="collapsible-wrapper collapsed">
+        <div class="collapsible"> <select name="areas" id="areas-of-origin">
+            <option value="default"></option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapsible-group">
+      <!-- <h4 class="toggler" onclick="collapse(this)">Filter by ingredients</h4> -->
+      <h4 class="toggler toggled" onclick="collapse(this)">Filter by ingredients</h4>
+      <!-- <div class="collapsible-wrapper collapsed"> -->
+      <div class="collapsible-wrapper">
+        <div class="collapsible">
+          <input type="text" id="search-ingredients-input" placeholder="Type an ingredient" />
+          <ul id="search-ingredients-suggestions"></ul>
+          <div id="search-ingredients-list"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="container results" id="results-container"></div>
+  <script src="scripts/index.js"></script>
+</body>
+
 </html>
