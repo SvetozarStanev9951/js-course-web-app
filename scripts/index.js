@@ -142,7 +142,6 @@ function createMealThumbnail(mealObj) {
 
 async function filterByCategory(category) {
   const { meals: recipes } = await fetchData(filterBy, "c=" + category);
-
   resultsContainer.innerHTML = "";
   resultsContainer.style.flexDirection = "row";
   resultsContainer.style.flexWrap = "wrap";
